@@ -40,7 +40,6 @@ async def get_todos() -> dict:
 
 @app.post("/todo", tags=["To-dos"])
 async def add_todo(todo: dict) -> dict:
-    print(todo)
     todos.append(todo)
     return {
         "data": {
