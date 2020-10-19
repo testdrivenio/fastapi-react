@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import {
     Box,
     Button,
@@ -25,7 +24,7 @@ const TodosContext = React.createContext({
 
 function AddTodo() {
     const [item, setItem] = React.useState("")
-    const {fetchTodos} = React.useContext(TodosContext)
+    const {todos, fetchTodos} = React.useContext(TodosContext)
 
     const handleInput = e => {
         setItem(e.target.value)
@@ -33,7 +32,7 @@ function AddTodo() {
 
     const handleSubmit = (e) => {
         const newTodo = {
-            "id": uuidv4(),
+            "id": todos.length + 1,
             "item": item
         }
 
