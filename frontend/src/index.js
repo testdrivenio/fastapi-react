@@ -9,7 +9,7 @@ function App({ children }) {
         <ThemeProvider>
             <Header />
             <Todos />
-            {children}
+            
         </ThemeProvider>
     )
 }
