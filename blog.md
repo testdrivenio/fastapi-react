@@ -24,22 +24,16 @@ By the end of this tutorial, you will be able to:
 
 1. Develop a RESTful API with Python and FastAPI
 2. Scaffold a React project with Create React App
-3. Create and render React components in the browser
-4. Connect a React application to a FastAPI backend
-
-TODO: add objectives for React Context API and Hooks
+3. Manage state operations with React Context API and Hooks
+4. Create and render React components in the browser
+5. Connect a React application to a FastAPI backend
 
 ## What is FastAPI?
 
-FastAPI is a modern, high-performance, batteries-included Python web framework that's perfect for building RESTful APIs. It can handle both synchronous and asynchronous requests and has built-in support for data validation, JSON serialization, authentication and authorization, and OpenAPI.
-
-TODO: can you rewrite this in your own words
+FastAPI is a python framework for building fast and efficient backend APIs. It handles both synchronous and asynchronous operations and has built-in support for data validation, authentication, and an interactive documentation powered by OpenAPI.
 
 ## What is React?
-
-React is an open-source, front end, JavaScript library for building user interfaces or UI components. It is maintained by Facebook and a community of individual developers and companies. React can be used as a base in the development of single-page or mobile applications.
-
-TODO: can you rewrite this in your own words
+React is a JavaScript UI library used in building frontend application components. It was developed by Facebook and is currently maintained by Facebook and the open source community.
 
 ## Setting up the Project
 
@@ -75,7 +69,7 @@ Install FastAPI:
 (venv)$ pip install fastapi==0.61.1 uvicorn==0.11.8
 ```
 
-TODO: mention what uvicorn is and why it's necessary.
+[Uvicorn](http://www.uvicorn.org/) is an Asynchronous Server Gateway Interface (ASGI) server that will be responsible for the deployment of our backend API. 
 
 Next, create the following files and folders in the "backend" folder:
 
@@ -164,7 +158,7 @@ $ cd frontend
 
 To simplify things, remove all files in the "src" folder except the *index.js* file. *index.js* is our base component.
 
-Next, install a UI component library library called [Chakra UI](http://chakra-ui.com/):
+Next, install a UI component library called [Chakra UI](http://chakra-ui.com/):
 
 ```sh
 $ npm install @chakra-ui/core @emotion/core @emotion/styled emotion-theming
@@ -266,7 +260,7 @@ todos = [
 ]
 ```
 
-TODO: add a note that this is just dummy data for prototyping purposes that should be put into a database
+> The todos array above is just dummy data used for the course of this tutorial. The data in the todo object simply represents the structure of individual todos.
 
 Then, add the route handler:
 
@@ -863,5 +857,6 @@ Check your understanding by reviewing the objectives from the beginning of this 
 
 
 Next steps:
-
-1. TODO can you add some next steps here
+1. Deploy the React app to Netlify using this [guide](https://www.netlify.com/blog/2016/07/22/deploy-react-apps-in-less-than-30-seconds/) and update the CORS object in the backend.
+2. Deploy the backend API server to Heroku ( feel free to host it on a platform of your choice) and replace the connection URL on the frontend.
+3. Set up unit and integration tests with Pytest for the backend and Jest for the frontend.
