@@ -1,4 +1,22 @@
-# Developing a Single Page App with FastAPI and React
+---
+title: Developing a Single Page App with FastAPI and React
+layout: blog
+share: true
+toc: true
+permalink: fastapi-mongo
+type: blog
+author: Abdulazeez Abdulazeez Adeshina
+lastname: adeshina
+description: This tutorial looks at how to develop an asynchronous API with FastAPI and MongoDB.
+keywords: "fastapi, python fastapi, fastapi mongo, fastapi mongodb, fastapi rest api"
+image: fastapi-mongo/fastapi_mongo.png
+topics: "fastapi, api, heroku"
+blurb: Develop an asynchronous API with FastAPI and MongoDB.
+related_posts: fastapi-crud, fastapi-machine-learning, fastapi-streamlit
+featured_course: tdd-fastapi
+date: 2020-09-21
+modified_date: 2020-09-21
+---
 
 In this tutorial, you'll be building a CRUD todo application with [FastAPI](https://fastapi.tiangolo.com/) and [React](https://reactjs.org/). We'll start by scaffolding a new React application with the [Create React App](https://create-react-app.dev/) CLI before building the backend RESTful API with FastAPI.
 
@@ -69,7 +87,7 @@ Install FastAPI:
 (venv)$ pip install fastapi==0.61.1 uvicorn==0.11.8
 ```
 
-[Uvicorn](http://www.uvicorn.org/) is an Asynchronous Server Gateway Interface (ASGI) server that will be responsible for the deployment of our backend API. 
+[Uvicorn](http://www.uvicorn.org/) is an Asynchronous Server Gateway Interface (ASGI) server that will be responsible for the deployment of our backend API.
 
 Next, create the following files and folders in the "backend" folder:
 
