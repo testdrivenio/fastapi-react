@@ -2,8 +2,8 @@ import React from "react";
 import { render } from 'react-dom';
 import { ThemeProvider } from "@chakra-ui/core";
 
-import Header from "./components/Header";
-import Todos from "./components/Todos";
+import Header from "./Components/Header";
+import Todos from "./Components/Todos";
 
 function App() {
   return (
