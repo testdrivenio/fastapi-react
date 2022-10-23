@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/core": "^0.8.0",
+    "@chakra-ui/provider": "^2.0.20",    
     "@chakra-ui/react": "^2.0.0",
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.9.0",
