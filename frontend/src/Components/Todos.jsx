@@ -119,6 +119,40 @@ function DeleteTodo({id}) {
   )
 }
 
+function UploadResume() {
+  const [resume, setResume] = React.useState(null)
+
+  const handleInput = event  => {
+    setResume(event.target.files[0])
+  }
+
+  const handleSubmit = (event) => {
+    // console.log('here')
+    const formData = new FormData()
+    formData.append("resume", resume)
+
+    fetch("http://localhost:8000/resume", {
+      method: "POST",
+      body: formData
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputGroup size="md">
+        <Input
+          pr="4.5rem"
+          type="file"
+          placeholder="Upload a resume"
+          aria-label="Upload a resume"
+          onChange={handleInput}
+        />
+      </InputGroup>
+      <Button h="1.5rem" size="sm" onClick={handleSubmit}>Upload</Button>
+    </form>
+  )
+}
+
 function TodoHelper({item, id, fetchTodos}) {
   return (
     <Box p={1} shadow="sm">
@@ -146,15 +180,17 @@ export default function Todos() {
     fetchTodos()
   }, [])
   return (
-    <TodosContext.Provider value={{todos, fetchTodos}}>
-      <AddTodo />
-      <Stack spacing={5}>
-        {
-          todos.map((todo) => (
-            <TodoHelper item={todo.item} id={todo.id} fetchTodos={fetchTodos} />
-          ))
-        }
-      </Stack>
-    </TodosContext.Provider>
+    <UploadResume />
+    // <TodosContext.Provider value={{todos, fetchTodos}}>
+    //   <AddTodo />
+    //   <Stack spacing={5}>
+    //     {
+    //       todos.map((todo) => (
+    //         <TodoHelper item={todo.item} id={todo.id} fetchTodos={fetchTodos} />
+    //       ))
+    //     }
+    //   </Stack>
+      
+    // </TodosContext.Provider>
   )
 }

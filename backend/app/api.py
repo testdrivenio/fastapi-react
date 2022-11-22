@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from .service import get_resume_recommendations
 
 
 todos = [
@@ -48,6 +49,9 @@ async def add_todo(todo: dict) -> dict:
         "data": { "Todo added." }
     }
 
+@app.post("/resume", tags=["resume"])
+async def add_resume(resume: UploadFile) -> dict:
+    return get_resume_recommendations(resume)
 
 @app.put("/todo/{id}", tags=["todos"])
 async def update_todo(id: int, body: dict) -> dict:
