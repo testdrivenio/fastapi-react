@@ -4,3 +4,4 @@ build/
 venv/
 __pycache__
 backend/env
+backend/.env

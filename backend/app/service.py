@@ -3,8 +3,6 @@ import base64
 import datetime
 import requests
 import json
-import random
-import string
 import os
 import openai
 
@@ -13,13 +11,13 @@ def get_resume_recommendations(resume: UploadFile):
     base64str =  base64.b64encode(resume.file.read()).decode('UTF-8')
     lastModifiedDate = datetime.date.today().strftime("%Y-%m-%d") 
 
-    positions = get_resume_highlights_and_improvements(base64str, lastModifiedDate)
+    positions = get_resume_highlights(base64str, lastModifiedDate)
 
     return {
         "data": positions
     }
 
-def get_resume_highlights_and_improvements(base64str: str, lastModifiedDate: datetime.date):
+def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
     # Using Sovren API to get resume highlights
     url = "https://rest.resumeparsing.com/v10/parser/resume"
     payload = {
@@ -63,36 +61,24 @@ def get_resume_highlights_and_improvements(base64str: str, lastModifiedDate: dat
             title = position['JobTitle']['Normalized']
         else:
             # generate string with random chars
-            title = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+            title = 'No Job Title Found'
 
         highlights = description.split('\n')
-        highlights_json = []
-        for highlight in highlights:
-            if highlight == '':
-                continue
-            if len(highlight) < 20:
-                continue
+        highlights = list(filter(lambda x: len(x) > 20, highlights))
 
-            highlights_json.append({
-                "highlight": highlight,
-                "improvment_choices": generate_hightlight_improvment(highlight)
-            })
-
-        positions_json.append({'title': title, 'highlights': highlights_json})
+        positions_json.append({'title': title, 'highlights': highlights})
     
     return positions_json
 
-def generate_hightlight_improvment(highlight: str):
-    # use open ai to generate improvment
-
-    openai.api_key = "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"
-    # gpt3 request 
+def generate_highlight_improvment(highlight: str):
+    openai.api_key_path = '.env'
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.Completion.create(
         model="text-davinci-002",
         prompt="Rewrite this resume bullet point to make it sound more exciting and impactful by using more powerful verbs and highlighting key quantitative results and tools that were used. Don't use any pronouns and write everything in the past tense.\n\nBullet point: " + highlight,
         temperature=0.7,
         max_tokens=215,
-        n=3,
+        n=1,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0
@@ -100,4 +86,6 @@ def generate_hightlight_improvment(highlight: str):
 
     choices = [choice.text for choice in response['choices']]
 
-    return choices
+    return {
+        "data": choices
+    }
