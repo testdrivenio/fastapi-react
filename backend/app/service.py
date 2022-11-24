@@ -32,8 +32,7 @@ def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
         'sovren-accountid': "37306374",
         'sovren-servicekey': "8qWxcGqr0OdDUisjCDNWxWdKrftMQR/fyovdtvwn",
     }
-
-    # print(payload)
+    
 
     response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
     responseJson = json.loads(response.content)
@@ -89,3 +88,6 @@ def generate_highlight_improvment(highlight: str):
     return {
         "data": choices
     }
+
+## function that adds and multiplies two numbers
+
