@@ -8,7 +8,10 @@ import {
   Box,
   Text,
   HStack,
+  IconButton,
+  useMultiStyleConfig,
 } from "@chakra-ui/react";
+import { CopyIcon, SunIcon } from "@chakra-ui/icons";
 
 function UploadResume() {
   const [resume, setResume] = useState(null);
@@ -31,6 +34,8 @@ function UploadResume() {
     setPositions(positionsJson["data"]);
   };
 
+  const styles = useMultiStyleConfig("Button", { variant: "outline" });
+
   return (
     <Stack spacing={10} margin={10}>
       <Box>
@@ -40,17 +45,32 @@ function UploadResume() {
         <form onSubmit={handleSubmit}>
           <InputGroup size="lg">
             <Input
-              pr="4.5rem"
+              pr="9.5rem"
               type="file"
               placeholder="Upload a resume"
               aria-label="Upload a resume"
               onChange={handleInput}
+              sx={{
+                "::file-selector-button": {
+                  border: "none",
+                  outline: "none",
+                  marginTop: 1,
+                  marginBottom: 1,
+                  mr: 2,
+                  ...styles,
+                },
+              }}
             />
           </InputGroup>
         </form>
       </Box>
       <Box>
-        <Button h="3.5rem" size="lg" onClick={handleSubmit}>
+        <Button
+          h="3.5rem"
+          size="lg"
+          onClick={handleSubmit}
+          colorScheme={"teal"}
+        >
           Upload
         </Button>
       </Box>
@@ -61,19 +81,25 @@ function UploadResume() {
 
       {positions.map((position) => (
         <Position
+          key={position["title"] + position["employerName"]}
           title={position["title"]}
           highlights={position["highlights"]}
+          employerName={position["employerName"]}
+          startDate={position["startDate"]}
+          endDate={position["endDate"]}
         />
       ))}
     </Stack>
   );
 }
 
-function Position({ title, highlights }) {
+function Position({ title, employerName, startDate, endDate, highlights }) {
   const [choices, setChoices] = useState([]);
+  const [isGettingImprovements, setIsGettingImprovements] = useState(false);
 
   const handleSubmit = async () => {
     // run mutliple requests for each highlight
+    setIsGettingImprovements(true);
 
     const choices = highlights.map(async (highlight) => {
       const url = `http://localhost:8000/resume/improvement`;
@@ -88,31 +114,61 @@ function Position({ title, highlights }) {
 
     Promise.all(choices).then((values) => {
       setChoices(values);
+      setIsGettingImprovements(false);
     });
   };
 
   return (
     <Box>
-      <HStack>
-        <Heading size="md" marginBottom={5}>
-          {title}
-        </Heading>
-        <Button h="2.5rem" size="md" onClick={handleSubmit}>
+      <HStack marginBottom={5}>
+        <Box>
+          <Heading size="md">{title}</Heading>
+          <Text size="md">
+            {employerName}
+            {", "}
+            {startDate}
+            {" to "} {endDate}
+          </Text>
+        </Box>
+        <Button
+          h="2.5rem"
+          size="md"
+          onClick={handleSubmit}
+          colorScheme="whatsapp"
+          style={{ marginLeft: 20 }}
+          isLoading={isGettingImprovements}
+          loadingText="Generating"
+          spinnerPlacement="end"
+        >
           Improve
         </Button>
       </HStack>
 
       {highlights.map((highlight, i) => (
-        <Box>
-          <Text fontSize="lg" marginBottom={5}>
-            {highlight}
+        <Box key={highlight}>
+          <Text fontSize="xl" marginBottom={5}>
+            • {highlight}
           </Text>
           {choices.length > 0 &&
             choices[i] &&
             choices[i].map((choice) => (
-              <Text fontSize="md" marginBottom={5} style={{ textIndent: 20 }}>
-                {choice}
-              </Text>
+              <HStack
+                marginBottom={5}
+                borderWidth="3px"
+                padding={5}
+                style={{ marginLeft: 20, borderRadius: 10 }}
+              >
+                <SunIcon color="yellow.500" w={5} h={5}></SunIcon>
+                <Text fontSize="lg" marginBottom={5}>
+                  {choice}
+                </Text>
+                <IconButton
+                  colorScheme="blue"
+                  aria-label="Copy"
+                  icon={<CopyIcon />}
+                  onClick={() => navigator.clipboard.writeText(choice)}
+                />
+              </HStack>
             ))}
         </Box>
       ))}

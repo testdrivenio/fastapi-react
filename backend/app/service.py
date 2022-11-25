@@ -55,17 +55,39 @@ def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
 
         description = position['Description']
 
+
+        employer_name = ''
+        if 'Employer' in position:
+            employer_name = position['Employer']['Name']['Normalized']
+        else:
+            employer_name = 'Unknown Employer'
+
+
+        def get_end_date(end_date):
+            if is_current:
+                return 'Current'
+            else:
+                return datetime.datetime.strptime(end_date, '%Y-%m-%d').strftime('%B %Y')
+
+        start_date = position['StartDate']['Date']
+        start_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').strftime('%B %Y')
+        end_date = get_end_date(position['EndDate']['Date'])
+
         title = ''
         if 'JobTitle' in position:
             title = position['JobTitle']['Normalized']
         else:
-            # generate string with random chars
             title = 'No Job Title Found'
 
         highlights = description.split('\n')
         highlights = list(filter(lambda x: len(x) > 20, highlights))
 
-        positions_json.append({'title': title, 'highlights': highlights})
+        def remove_bullets(highlight):
+            first_char = highlight.find(next(filter(str.isalpha or str.isnumeric, highlight)))
+            return highlight[first_char:]
+
+        highlights = list(map(remove_bullets, highlights))
+        positions_json.append({'title': title, 'employerName': employer_name, 'highlights': highlights, 'startDate': start_date, 'endDate': end_date})
     
     return positions_json
 
@@ -77,7 +99,7 @@ def generate_highlight_improvment(highlight: str):
         prompt="Rewrite this resume bullet point to make it sound more exciting and impactful by using more powerful verbs and highlighting key quantitative results and tools that were used. Don't use any pronouns and write everything in the past tense.\n\nBullet point: " + highlight,
         temperature=0.7,
         max_tokens=215,
-        n=1,
+        n=2,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0
