@@ -95,14 +95,15 @@ def generate_highlight_improvment(highlight: str):
     openai.api_key_path = '.env'
     openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.Completion.create(
-        model="text-davinci-002",
-        prompt="Rewrite this resume bullet point to make it sound more exciting and impactful by using more powerful verbs and highlighting key quantitative results and tools that were used. Don't use any pronouns and write everything in the past tense.\n\nBullet point: " + highlight,
-        temperature=0.7,
+        model="davinci:ft-personal-2022-11-27-03-44-47",
+        prompt=highlight + "\n\n###\n\n",
+        temperature=0.75,
         max_tokens=215,
         n=2,
         top_p=1,
         frequency_penalty=0,
-        presence_penalty=0
+        presence_penalty=0,
+        stop=["###"]
     )
 
     choices = [choice.text for choice in response['choices']]
