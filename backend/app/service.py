@@ -6,6 +6,9 @@ import json
 import os
 import openai
 
+from dotenv import load_dotenv
+load_dotenv()
+
 def get_resume_recommendations(resume: UploadFile):
 
     base64str =  base64.b64encode(resume.file.read()).decode('UTF-8')
@@ -29,8 +32,8 @@ def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
     headers = {
         'accept': "application/json",
         'content-type': "application/json",
-        'sovren-accountid': "37306374",
-        'sovren-servicekey': "8qWxcGqr0OdDUisjCDNWxWdKrftMQR/fyovdtvwn",
+        'sovren-accountid': os.getenv("SOVREN_ACCOUNT_ID"),
+        'sovren-servicekey': os.getenv("SOVREN_SERVICE_KEY"),
     }
     
 
@@ -39,8 +42,6 @@ def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
     
     #grab the ResumeData
     resumeData = responseJson['Value']['ResumeData']
-    # print(resumeData)
-    
     #access the ResumeData properties with simple JSON syntax
 
     #get description for all jobs and then run them through Open AI
@@ -92,7 +93,6 @@ def get_resume_highlights(base64str: str, lastModifiedDate: datetime.date):
     return positions_json
 
 def generate_highlight_improvment(highlight: str):
-    openai.api_key_path = '.env'
     openai.api_key = os.getenv("OPENAI_API_KEY")
     response = openai.Completion.create(
         model="davinci:ft-personal-2022-11-27-03-44-47",
