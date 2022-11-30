@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from .service import get_resume_recommendations, generate_highlight_improvment
+from .schemas import CreateImprovementRequest
 
 
 todos = [
@@ -30,48 +32,11 @@ app.add_middleware(
         allow_headers=["*"]
 )
 
+@app.post("/resume/highlights", tags=["resume"])
+async def add_and_get_resume_highlights(resume: UploadFile) -> dict:
+    return get_resume_recommendations(resume)
 
-@app.get("/", tags=["root"])
-async def read_root() -> dict:
-    return {"message": "Welcome to your todo list."}
+@app.post("/resume/improvement", tags=["highlight"])
+async def get_resume_highlight_improvement(highlight_details: CreateImprovementRequest) -> dict:
+    return generate_highlight_improvment(highlight_details.highlight)
 
-
-@app.get("/todo", tags=["todos"])
-async def get_todos() -> dict:
-    return { "data": todos }
-
-
-@app.post("/todo", tags=["todos"])
-async def add_todo(todo: dict) -> dict:
-    todos.append(todo)
-    return {
-        "data": { "Todo added." }
-    }
-
-
-@app.put("/todo/{id}", tags=["todos"])
-async def update_todo(id: int, body: dict) -> dict:
-    for todo in todos:
-        if int(todo["id"]) == id:
-            todo["item"] = body["item"]
-            return {
-                "data": f"Todo with id {id} has been updated."
-            }
-
-    return {
-        "data": f"Todo with id {id} not found."
-    }
-
-
-@app.delete("/todo/{id}", tags=["todos"])
-async def delete_todo(id: int) -> dict:
-    for todo in todos:
-        if int(todo["id"]) == id:
-            todos.remove(todo)
-            return {
-                "data": f"Todo with id {id} has been removed."
-            }
-
-    return {
-        "data": f"Todo with id {id} not found."
-    }
