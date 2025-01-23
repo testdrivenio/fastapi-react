@@ -17,8 +17,8 @@ todos = [
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
-    "localhost:3000"
+    "http://localhost:5173",
+    "localhost:5173"
 ]
 
 
