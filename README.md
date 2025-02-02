@@ -2,7 +2,7 @@
 
 ### Want to learn how to build this?
 
-Check out the [post](https://testdriven.io/blog/fastapi-react/).
+Check out the [tutorial](https://testdriven.io/blog/fastapi-react/).
 
 ## Want to use this project?
 
@@ -12,7 +12,7 @@ Check out the [post](https://testdriven.io/blog/fastapi-react/).
 
     ```sh
     $ cd backend
-    $ python3.9 -m venv env
+    $ python3.13 -m venv env
     $ source env/bin/activate
     (env)$ pip install -r requirements.txt
     (env)$ python main.py
@@ -25,7 +25,7 @@ Check out the [post](https://testdriven.io/blog/fastapi-react/).
     ```sh
     $ cd frontend
     $ npm install
-    $ npm run start
+    $ npm run dev
     ```
 
-    Navigate to [http://localhost:3000](http://localhost:3000)
+    Navigate to [http://localhost:5173](http://localhost:5173)
